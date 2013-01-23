@@ -1,3 +1,4 @@
+'use strict';
 module.exports = function(grunt) {
 
   // Project configuration.
@@ -7,11 +8,29 @@ module.exports = function(grunt) {
       files: ['test/**/*.js']
     },
     lint: {
-      files: ['grunt.js', 'lib/**/*.js', 'test/**/*.js']
+      files: ['lib/**/*.js', 'test/**/*.coffee']
     },
     watch: {
-      files: '<config:lint.files>',
-      tasks: 'default'
+      files: ['<config:coffee.app.src>', 'src/**/*.jade'],
+      tasks: 'coffee cp'
+    },
+    coffee: {
+      app: {
+        src: ['src/**/*.coffee'],
+        dest: './lib',
+        options: {
+          preserve_dirs: true,
+          base_path: 'src'
+        }
+      }
+    },
+    coffeelint: {
+      all: { 
+        src: ['src/**/*.coffee', 'test/**/*.coffee'],
+      }
+    },
+    clean:{
+      folder: 'lib'
     },
     jshint: {
       options: {
@@ -34,6 +53,9 @@ module.exports = function(grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', 'lint test');
-
+  grunt.registerTask('default', 'coffeelint coffee');
+  grunt.loadNpmTasks('grunt-coffee');
+  grunt.loadNpmTasks('grunt-coffeelint');
+  grunt.loadNpmTasks('grunt-cp');
+  grunt.loadNpmTasks('grunt-clean');
 };
