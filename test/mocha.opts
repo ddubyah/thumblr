@@ -3,6 +3,6 @@
 --require test/test_helpers.coffee
 --reporter min
 --colors
---timeout 15000
+--timeout 5000
 --slow 5000
 --globals location
