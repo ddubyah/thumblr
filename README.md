@@ -1,6 +1,7 @@
 # thumblr
+=======
 
-Generate thumbnails for a list of urls
+Create thumbnails for a list of urls in a headless browser
 
 ## Getting Started
 Install the module with: `npm install thumblr`
