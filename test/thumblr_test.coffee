@@ -1,5 +1,6 @@
 Thumblr = require '../src/thumblr'
 BrowserProxy = require '../src/browser_proxy'
+path = require 'path'
 
 describe "Thumblr.", ->
   it "should exists", ->
@@ -39,7 +40,7 @@ describe "Thumblr.", ->
         @sut.addJob @outputPath2, @urlList2
         @sut.queue.should.have.length 2
 
-    describe "run(callback)", ->
+    describe.only "run(callback)", ->
       beforeEach ->
         _getFakePage = ->
           {
@@ -55,7 +56,7 @@ describe "Thumblr.", ->
         @urlList1 = ("http://url/#{i}" for i in [1..10])
         @urlList2 = ("http://url/#{i}" for i in [11..20])
 
-        @sut = new Thumblr()
+        @sut = new Thumblr formatter: "my_thumbs_%d.png"
         @sut.addJob @outputPath1, @urlList1
         @sut.addJob @outputPath2, @urlList2
 
@@ -77,8 +78,12 @@ describe "Thumblr.", ->
           sinon.assert.callCount BrowserProxy.prototype.renderThumbnail, 20
           BrowserProxy.prototype.visit.should.have.been.calledWithMatch @urlList1[0]
           BrowserProxy.prototype.visit.should.have.been.calledWithMatch @urlList1[9]
-          BrowserProxy.prototype.renderThumbnail.should.have.been.calledWithMatch @outputPath1
-          BrowserProxy.prototype.renderThumbnail.should.have.been.calledWithMatch @outputPath2
+          done()
+
+      it "should use the name formatter", (done)->
+        @sut.run (err)=>
+          BrowserProxy.prototype.renderThumbnail.should.have.been.calledWithMatch path.join(@outputPath1, 'my_thumbs_1.png')
+          BrowserProxy.prototype.renderThumbnail.should.have.been.calledWithMatch path.join(@outputPath2, 'my_thumbs_9.png')
           done()
 
 

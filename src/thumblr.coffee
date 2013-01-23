@@ -2,6 +2,8 @@ Hash = require 'hashish'
 require 'colors'
 async = require 'async'
 BrowserProxy = require './browser_proxy'
+path = require 'path'
+util = require 'util'
 
 class Thumblr
   @_defaults: 
@@ -9,6 +11,7 @@ class Thumblr
       width: 1024
       height: 768
     zoomFactor: 0.5
+    formatter: "thumb_%d.png"
 
   _titles: 0 # value must be set in the constructor for instances
   _privateStuff: ()->
@@ -47,8 +50,11 @@ class Thumblr
 
   _runJob: (job, callback)->
     _startTime = process.hrtime()
+    _counter = 0
     async.forEachSeries job.urls, (item, callback)=>
-      @_processThumbnail item, job.path, callback
+      thumbPath = path.join job.path, util.format(@browserOptions.formatter, _counter)
+      _counter = _counter+1
+      @_processThumbnail item, thumbPath, callback
     ,(err)->
       console.log "Job complete in %s".green.underline, process.hrtime _startTime unless err 
       callback err
@@ -60,7 +66,7 @@ class Thumblr
         console.log "%s -> %s : %s", url, outputPath, process.hrtime(_startTime)
         callback err
 
-  _renderThumbnail: (url, path, callback)->
+  _renderThumbnail: (url, outputPath, callback)->
     _browserProxy = new BrowserProxy { zoomFactor:0.5 }
     async.auto {
       visitPage: 
@@ -82,7 +88,7 @@ class Thumblr
       renderPage: [
         'checkUrl'
         (callback, results)->
-          _browserProxy.renderThumbnail path, callback
+          _browserProxy.renderThumbnail outputPath, callback
       ]
       closeBrowser: [
         'renderPage'
