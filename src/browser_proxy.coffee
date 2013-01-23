@@ -11,9 +11,11 @@ _ = require 'underscore'
 phantomProxy = require 'phantom-proxy'
 
 
+'use strict'
 require 'colors'
 
 # Acts as a proxy for a web browser
+# TODO: Mock out dependencies for phantom to allow for easier ci testing
 class BrowserProxy
   @_browserDefaults:
     viewportSize:

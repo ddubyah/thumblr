@@ -7,11 +7,11 @@ http = require 'http'
 fs = require 'fs.extra'
 # wrench = require 'wrench'
 
-BrowserProxy = require '../../../lib/utilities/browser_proxy'
+BrowserProxy = require '../src/browser_proxy'
 
 # constants
 PORT = 3838
-THUMBPATH = path.resolve __dirname, '../../fixtures/delete_me/thumbs'
+THUMBPATH = path.resolve __dirname, './fixtures/delete_me/thumbs'
 _testPage = null
 
 describe "Browser Proxy", ->
