@@ -40,7 +40,7 @@ describe "Thumblr.", ->
         @sut.addJob @outputPath2, @urlList2
         @sut.queue.should.have.length 2
 
-    describe.only "run(callback)", ->
+    describe "run(callback)", ->
       beforeEach ->
         _getFakePage = ->
           {

@@ -1,6 +1,7 @@
 --growl
 --compilers coffee:coffee-script
 --require test/test_helpers.coffee
+--recursive
 --reporter min
 --colors
 --timeout 5000
