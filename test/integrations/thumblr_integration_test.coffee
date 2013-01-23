@@ -1,0 +1,1 @@
+thumblr_integration_test.coffee
