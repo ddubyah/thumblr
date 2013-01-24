@@ -11,9 +11,11 @@ _ = require 'underscore'
 phantomProxy = require 'phantom-proxy'
 
 
+'use strict'
 require 'colors'
 
 # Acts as a proxy for a web browser
+# TODO: Mock out dependencies for phantom to allow for easier ci testing
 class BrowserProxy
   @_browserDefaults:
     viewportSize:
@@ -53,7 +55,7 @@ class BrowserProxy
       ]
 
     }, (err, results)->
-      console.log "Page load complete: %s".green, url
+      # console.log "Page load complete: %s".green, url
       if err
         console.warn "%s".yellow.underline, err 
         return callback err
@@ -62,7 +64,7 @@ class BrowserProxy
 
   close: (callback)->
     ph = @_phantom
-    console.log "Closing Phantom Pages".yellow
+    # console.log "Closing Phantom Pages".yellow
     async.auto {
       getPhantom:
         (asyncCallback)=>
@@ -80,7 +82,7 @@ class BrowserProxy
     }, (err, results)->
       throw err if err
       ph.reset() # drop the cache objects
-      console.log "Browser closed".red
+      # console.log "Browser closed".red
       callback err, "Page closed" if callback?
 
   renderThumbnail: (fullOutputFilePath, callback)->
@@ -96,25 +98,25 @@ class BrowserProxy
         'getPage'
         (asyncCallback, results)->
           results.getPage.get 'url', (value)->
-            console.log "Current url: %s".yellow, value
+            # console.log "Current url: %s".yellow, value
             asyncCallback null, value
       ]
       setViewport: [
         'getPage'
         (asyncCallback, results)=>
-          console.log "Setting browser size"
+          # console.log "Setting browser size"
           @_setPhantomPageProperty results.getPage, 'viewportSize', targetViewport, asyncCallback
       ]
       setZoom: [
         'getPage'
         (asyncCallback, results)=>
-          console.log "Setting browser zoom"
+          # console.log "Setting browser zoom"
           @_setPhantomPageProperty results.getPage, 'zoomFactor', zoom, asyncCallback
       ]
       setClipping: [
         'getPage'
         (asyncCallback, results)=>
-          console.log "Setting browser clipping"
+          # console.log "Setting browser clipping"
           @_setPhantomPageProperty results.getPage, 'clipRect', {
             top: 0
             left: 0
@@ -128,14 +130,14 @@ class BrowserProxy
         'setViewport'
         'setClipping'
         (asyncCallback, results)->
-          console.log "Rendering Thumbnail for %s", results.testPageInfo
+          # console.log "Rendering Thumbnail for %s", results.testPageInfo
           
           # don't render if we haven't visited a valid page
           if results.testPageInfo.match /about:blank/i
             asyncCallback "Can't Render: #{results.testPageInfo}" 
           else
             results.getPage.render fullOutputFilePath, (success)->
-              console.log "Rendered page? %s", success
+              # console.log "Rendered page? %s", success
               if success
                 asyncCallback null , "Rendered file"
               else
@@ -143,13 +145,13 @@ class BrowserProxy
       ]
     }, (err, results)->
       # console.error "%s".red, err if err
-      console.log "Render Complete %s".green, fullOutputFilePath
+      # console.log "Render Complete %s".green, fullOutputFilePath
       process.nextTick ->
         callback err, results
 
 
   _createPhantomProxyCachedObjects: ->
-    console.log "Creating phantom object cache"
+    # console.log "Creating phantom object cache"
     @_phantom = new AsyncCache {
       load: (key, callback)=>
         switch key
@@ -161,12 +163,12 @@ class BrowserProxy
     @_phantom
 
   _getPhantomProxyObject: (callback)->
-    console.log "Cacheing phantom proxy object".yellow
+    # console.log "Cacheing phantom proxy object".yellow
     phantomProxy.create {}, (proxy)->
       callback null, proxy
 
   _getPhantomPageProxy: (callback)->
-    console.log "Cacheing phantom page object".yellow
+    # console.log "Cacheing phantom page object".yellow
     async.auto {
       getPhantom:
         (asyncCallback, results)=>
@@ -185,7 +187,7 @@ class BrowserProxy
       #       asyncCallback
       # ]
     }, (err, results)->
-      console.log "New Phantom page ready".green
+      # console.log "New Phantom page ready".green
       callback err, results.getPhantomPage
 
   _setPhantomPageProperty: (page, property, value, callback)->
@@ -199,9 +201,9 @@ class BrowserProxy
   _scaleObjectKeys = (obj, scale= 0.5)->
     newObj = _.clone obj
     for k,v of obj
-      console.log "Scaling %d by %d", v, scale
+      # console.log "Scaling %d by %d", v, scale
       newObj[k] = v * scale
-    console.log "Scaling to :".yellow
+    # console.log "Scaling to :".yellow
     console.dir newObj
     newObj
 
