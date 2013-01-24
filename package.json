@@ -1,18 +1,18 @@
 {
   "name": "thumblr",
   "description": "Generate thumbnails for a list of urls",
-  "version": "0.1.0",
-  "homepage": "https://github.com/wallace/thumblr",
+  "version": "1.0.0",
+  "homepage": "https://github.com/darwalenator/thumblr",
   "author": {
     "name": "Darren Wallace",
     "email": "wallace@midweekcrisis.com"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/wallace/thumblr.git"
+    "url": "git://github.com/darwalenator/thumblr.git"
   },
   "bugs": {
-    "url": "https://github.com/wallace/thumblr/issues"
+    "url": "https://github.com/darwalenator/thumblr/issues"
   },
   "licenses": [
     {
@@ -25,7 +25,7 @@
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "mocha",
+    "test": "mocha test",
     "start": "mocha -w test"
   },
   "devDependencies": {
@@ -40,7 +40,7 @@
     "express": "~3.0.6",
     "wrench": "~1.4.4"
   },
-  "keywords": [],
+  "keywords": ["thumbnails", "images", "web pages"],
   "dependencies": {
     "async": "~0.1.22",
     "underscore": "~1.4.3",
