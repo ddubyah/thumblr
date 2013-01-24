@@ -56,6 +56,4 @@ module.exports = function(grunt) {
   grunt.registerTask('default', 'coffeelint coffee');
   grunt.loadNpmTasks('grunt-coffee');
   grunt.loadNpmTasks('grunt-coffeelint');
-  grunt.loadNpmTasks('grunt-cp');
-  grunt.loadNpmTasks('grunt-clean');
 };
