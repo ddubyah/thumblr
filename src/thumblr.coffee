@@ -13,15 +13,6 @@ class Thumblr
     zoomFactor: 0.5
     formatter: "thumb_%d.png"
 
-  _titles: 0 # value must be set in the constructor for instances
-  _privateStuff: ()->
-    console.log "Private by convention only"
-
-    ###
-    Public Members
-    ###
-    get_count: ->
-      # Do stuff
   browserOptions: {}
   queue: null
 
