@@ -15,3 +15,4 @@ npm-debug.log
 *.orig
 node_modules
 test/fixtures/delete_me
+.DS_Store
